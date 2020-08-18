@@ -105,7 +105,7 @@ struct ContentView: View {
 					Text("50…").tag(ChartLimit.halfPowerOfTen)
 					Text("#…").tag(ChartLimit.firstSignificant)
 					Text("##…").tag(ChartLimit.secondSignificant)
-					Text("\(chartMaxExplicit, specifier: "%.0f")").tag(ChartLimit.explicit(range:-1.0 ..< -1.0))
+					Text("\(chartMaxExplicit, specifier: "%.0f")").tag(ChartLimit.explicit(range:chartMaxExplicit ..< chartMaxExplicit))
 					}.pickerStyle(SegmentedPickerStyle())
 				Slider(value: $chartMaxExplicit, in:100...1000, step:25)
 				Spacer()
