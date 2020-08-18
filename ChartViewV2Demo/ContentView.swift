@@ -100,9 +100,11 @@ struct ContentView: View {
 			HStack {
 				Picker(selection: $chartMaxLimit, label: Text("")) {
 					Text("Data").tag(ChartLimit.fromData)
-					Text("…00").tag(ChartLimit.zeroEnding)
-					Text("…50").tag(ChartLimit.zeroOrFiveEnding)
-					Text("Explicit").tag(ChartLimit.explicit(max:chartMaxExplicit))
+					Text("10…").tag(ChartLimit.powerOfTen)
+					Text("50…").tag(ChartLimit.halfPowerOfTen)
+					Text("#…").tag(ChartLimit.firstSignificant)
+					Text("##…").tag(ChartLimit.secondSignificant)
+					Text("\(chartMaxExplicit, specifier: "%.0f")").tag(ChartLimit.explicit(max:chartMaxExplicit))
 					}.pickerStyle(SegmentedPickerStyle())
 				Slider(value: $chartMaxExplicit, in:100...1000, step:25)
 			}
