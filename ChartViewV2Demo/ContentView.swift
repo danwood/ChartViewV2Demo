@@ -20,6 +20,7 @@ struct ContentView: View {
 
 	@State private var chartMaxLimit = ChartLimit.fromData
 	@State private var chartMaxExplicit : Double = 200
+	@State private var symmetrical : Bool = false
 
     let mixedColorStyle = ChartStyle(backgroundColor: .white, foregroundColor: [
         ColorGradient(ChartColors.orangeBright, ChartColors.orangeDark),
@@ -32,10 +33,10 @@ struct ContentView: View {
 
     var body: some View {
 
-		var currentStyle = ChartStyle(backgroundColor: .white,
+		let currentStyle = ChartStyle(backgroundColor: .white,
 									  foregroundColor: [ColorGradient(.purple, .blue)],
 									  lineWidth: lineWidth, curvedLines: curvedLines, showBackground: showBackground)
-		currentStyle.limits = ChartLimits(max: chartMaxLimit)
+		currentStyle.limits = ChartLimits(yLimit: chartMaxLimit, symmetrical: symmetrical)
 
         return VStack(alignment: .center, spacing: 12.0) {
             BarChart()
@@ -104,10 +105,13 @@ struct ContentView: View {
 					Text("50…").tag(ChartLimit.halfPowerOfTen)
 					Text("#…").tag(ChartLimit.firstSignificant)
 					Text("##…").tag(ChartLimit.secondSignificant)
-					Text("\(chartMaxExplicit, specifier: "%.0f")").tag(ChartLimit.explicit(max:chartMaxExplicit))
+					Text("\(chartMaxExplicit, specifier: "%.0f")").tag(ChartLimit.explicit(range:-1.0 ..< -1.0))
 					}.pickerStyle(SegmentedPickerStyle())
 				Slider(value: $chartMaxExplicit, in:100...1000, step:25)
-			}
+				Spacer()
+				Text("Symmetrical").font(.footnote)
+				Toggle("", isOn: $symmetrical).labelsHidden()
+			}.padding(.horizontal)
         }
     }
 }
