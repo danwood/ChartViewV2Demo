@@ -18,6 +18,9 @@ struct ContentView: View {
 	@State private var showBackground : Bool = false
 	@State private var lineWidth : CGFloat = 1.0
 
+	@State private var chartMaxLimit = ChartLimit.fromData
+	@State private var chartMaxExplicit : Double = 200
+
     let mixedColorStyle = ChartStyle(backgroundColor: .white, foregroundColor: [
         ColorGradient(ChartColors.orangeBright, ChartColors.orangeDark),
         ColorGradient(.purple, .blue)
@@ -28,7 +31,13 @@ struct ContentView: View {
                                  foregroundColor: [ColorGradient(ChartColors.orangeBright, ChartColors.orangeDark)])
 
     var body: some View {
-        VStack(alignment: .center, spacing: 12.0) {
+
+		var currentStyle = ChartStyle(backgroundColor: .white,
+									  foregroundColor: [ColorGradient(.purple, .blue)],
+									  lineWidth: lineWidth, curvedLines: curvedLines, showBackground: showBackground)
+		currentStyle.limits = ChartLimits(max: chartMaxLimit)
+
+        return VStack(alignment: .center, spacing: 12.0) {
             BarChart()
                 .data(data2)
                 .chartStyle(mixedColorStyle)
@@ -38,9 +47,7 @@ struct ContentView: View {
                 LineChart()
             }
             .data(data1)
-			.chartStyle(ChartStyle(backgroundColor: .white,
-								   foregroundColor: [ColorGradient(.purple, .blue)],
-								   lineWidth: lineWidth, curvedLines: curvedLines, showBackground: showBackground))
+			.chartStyle(currentStyle)
 
             CardView {
                 ChartLabel("Title", type: .title)
@@ -89,6 +96,16 @@ struct ContentView: View {
 					Text("Width")	// not used? What's the point of this if it is unseen?
 				}
 			}.padding(.horizontal)
+
+			HStack {
+				Picker(selection: $chartMaxLimit, label: Text("")) {
+					Text("Data").tag(ChartLimit.fromData)
+					Text("…00").tag(ChartLimit.zeroEnding)
+					Text("…50").tag(ChartLimit.zeroOrFiveEnding)
+					Text("Explicit").tag(ChartLimit.explicit(max:chartMaxExplicit))
+					}.pickerStyle(SegmentedPickerStyle())
+				Slider(value: $chartMaxExplicit, in:100...1000, step:25)
+			}
         }
     }
 }
