@@ -14,6 +14,9 @@ struct ContentView: View {
     @State var data2: [Double] = (0..<16).map { _ in .random(in: 9.0...100.0) }
     @State var data3: [Double] = (0..<12).map { _ in .random(in: 9.0...100.0) }
 
+	@State private var curvedLines : Bool = false
+	@State private var lineWidth : CGFloat = 1.0
+
     let mixedColorStyle = ChartStyle(backgroundColor: .white, foregroundColor: [
         ColorGradient(ChartColors.orangeBright, ChartColors.orangeDark),
         ColorGradient(.purple, .blue)
@@ -34,7 +37,9 @@ struct ContentView: View {
                 LineChart()
             }
             .data(data1)
-            .chartStyle(blueStlye)
+			.chartStyle(ChartStyle(backgroundColor: .white,
+								   foregroundColor: [ColorGradient(.purple, .blue)],
+								   lineWidth: lineWidth, curvedLines: curvedLines))
 
             CardView {
                 ChartLabel("Title", type: .title)
@@ -45,13 +50,42 @@ struct ContentView: View {
             .frame(width: 160, height: 240)
             .padding()
 
-            Button(action: {
-                self.data1 = (0..<16).map { _ in .random(in: 9.0...100.0) } as [Double]
-                self.data2 = (0..<16).map { _ in .random(in: 9.0...100.0) } as [Double]
-                self.data3 = (0..<16).map { _ in .random(in: 9.0...100.0) } as [Double]
-            }) {
-                Text("Shuffle baby")
-            }
+			HStack {
+				Button(action: {
+					self.data1 = (0..<16).map { _ in .random(in: 1.0...100.0) } as [Double]
+					self.data2 = (0..<16).map { _ in .random(in: 1.0...100.0) } as [Double]
+					self.data3 = (0..<16).map { _ in .random(in: 1.0...100.0) } as [Double]
+
+					self.data1[0] = 100.0		// Override the first few random values . . .
+					self.data2[0] = 100.0
+					self.data3[0] = 100.0		// Make sure we are showing the extremes of values
+
+					self.data1[1] = 1.0			// by going from max to min a couple of times
+					self.data2[1] = 1.0
+					self.data3[1] = 1.0
+
+					self.data1[2] = 100.0
+					self.data2[2] = 100.0
+					self.data3[2] = 100.0
+
+					self.data1[3] = 0.0
+					self.data2[3] = 0.0
+					self.data3[3] = 0.0
+
+
+				}) {
+					Image(systemName: "shuffle")
+				}
+				Spacer()
+				Spacer()
+				Text("Curved").font(.footnote)
+				Toggle("", isOn: $curvedLines).labelsHidden()
+				Spacer()
+				Text("Width").font(.footnote)
+				Slider(value: $lineWidth, in: 1...40) {
+					Text("Width")	// not used? What's the point of this if it is unseen?
+				}
+			}.padding(.horizontal)
         }
     }
 }
