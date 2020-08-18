@@ -15,6 +15,7 @@ struct ContentView: View {
     @State var data3: [Double] = (0..<12).map { _ in .random(in: 9.0...100.0) }
 
 	@State private var curvedLines : Bool = false
+	@State private var showBackground : Bool = false
 	@State private var lineWidth : CGFloat = 1.0
 
     let mixedColorStyle = ChartStyle(backgroundColor: .white, foregroundColor: [
@@ -39,7 +40,7 @@ struct ContentView: View {
             .data(data1)
 			.chartStyle(ChartStyle(backgroundColor: .white,
 								   foregroundColor: [ColorGradient(.purple, .blue)],
-								   lineWidth: lineWidth, curvedLines: curvedLines))
+								   lineWidth: lineWidth, curvedLines: curvedLines, showBackground: showBackground))
 
             CardView {
                 ChartLabel("Title", type: .title)
@@ -77,9 +78,11 @@ struct ContentView: View {
 					Image(systemName: "shuffle")
 				}
 				Spacer()
-				Spacer()
 				Text("Curved").font(.footnote)
 				Toggle("", isOn: $curvedLines).labelsHidden()
+				Spacer()
+				Text("Background").font(.footnote)
+				Toggle("", isOn: $showBackground).labelsHidden()
 				Spacer()
 				Text("Width").font(.footnote)
 				Slider(value: $lineWidth, in: 1...40) {
