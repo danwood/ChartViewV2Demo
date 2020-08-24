@@ -58,6 +58,7 @@ struct ContentView: View {
 					self.data1 = (0..<16).map { _ in .random(in: 1.0...100.0) } as [Double]
 					self.data2 = (0..<16).map { _ in .random(in: 1.0...100.0) } as [Double]
 					self.data3 = (0..<16).map { _ in .random(in: 1.0...100.0) } as [Double]
+					self.data4 = (0..<8) .map { _ in .random(in: 1.0...125.0) } as [Double]
 
 					self.data1[0] = 100.0		// Override the first few random values . . .
 					self.data2[0] = 100.0
@@ -74,12 +75,6 @@ struct ContentView: View {
 					self.data1[3] = 0.0
 					self.data2[3] = 0.0
 					self.data3[3] = 0.0
-
-
-					self.data1 = (0..<16).map { _ in .random(in: 9.0...100.0) } as [Double]
-					self.data2 = (0..<16).map { _ in .random(in: 9.0...100.0) } as [Double]
-					self.data3 = (0..<16).map { _ in .random(in: 9.0...100.0) } as [Double]
-					self.data4 = (0..<8) .map { _ in .random(in: 1.0...125.0) } as [Double]
 				}) {
 					Text("Shuffle baby")
 				}
