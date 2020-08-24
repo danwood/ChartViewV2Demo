@@ -130,27 +130,33 @@ struct ContentView: View {
 						LineChart()
 					}
 					.data(data1)
-					.chartStyle(blueStyle)
+					.chartStyle(currentStyle)
 					.padding()
 
 
 					LineChart()
 						.data(data2)
-						.chartStyle(orangeStyle)
+						.chartStyle(currentStyle)
 
 					HStack {
-						Spacer()
-						Text("Curved").font(.footnote)
-						Toggle("", isOn: $curvedLines).labelsHidden()
-						Spacer()
-						Text("Background").font(.footnote)
-						Toggle("", isOn: $showBackground).labelsHidden()
-						Spacer()
-						Text("Width").font(.footnote)
-						Slider(value: $lineWidth, in: 1...40) {
-							Text("Width")	// not used? What's the point of this if it is unseen?
+						Group {		// beat the limit of 10
+							Spacer()
+							Text("Curve").font(.footnote)
+							Toggle("", isOn: $curvedLines).labelsHidden()
+							Spacer()
+							Text("Bkgnd").font(.footnote)
+							Toggle("", isOn: $showBackground).labelsHidden()
 						}
-					}.padding(.horizontal)
+						Spacer()
+						Text("Line").font(.footnote)
+						Slider(value: $lineWidth, in: 1...40) {
+							Text("Line width")	// not used? What's the point of this if it is unseen?
+						}
+						.frame(maxWidth:50)	// limit width
+						Spacer()
+						Text("±").font(.footnote)
+						Toggle("", isOn: $symmetrical).labelsHidden()
+				}.padding(.horizontal)
 
 					HStack {
 						Picker(selection: $chartMaxLimit, label: Text("")) {
@@ -162,9 +168,7 @@ struct ContentView: View {
 							Text("\(chartMaxExplicit, specifier: "%.0f")").tag(ChartLimit.explicit(range:chartMaxExplicit ..< chartMaxExplicit))
 						}.pickerStyle(SegmentedPickerStyle())
 						Slider(value: $chartMaxExplicit, in:100...1000, step:25)
-						Spacer()
-						Text("Symmetrical").font(.footnote)
-						Toggle("", isOn: $symmetrical).labelsHidden()
+							.frame(maxWidth:50)	// limit width
 					}.padding(.horizontal)
 				}
 				.tabItem { Image(systemName:"waveform.path.ecg.rectangle") }.tag(3)
