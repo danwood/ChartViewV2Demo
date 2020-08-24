@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-/////// import SwiftUICharts
+import SwiftUICharts
 
 struct ContentView: View {
 
